@@ -2,6 +2,7 @@ Neural Network based Sound Source Localization Models
 =====================================================
 
 This repository includes the programs to run and test the neural network models that we proposed in our publications in sound source localization and related fields, which are:
+
 * Deep learning based direction-of-arrival (DOA) estimation
 * Joint DOA estimation and speech/non-speech classification
 
