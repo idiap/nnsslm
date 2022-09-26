@@ -32,13 +32,13 @@ Usage
 Inference
 *********
 
-| ssl_nn_v2/test_nn_raw.py --feature=stft --method=METHOD_NAME --window-size=8192 --hop-size=4096 --batch-size=100 <SSLR_PATH>/human models/thesis_resnet_act5_p1lsp_s1ep4_ep10_valid_b100
+  ssl_nn_v2/test_nn_raw.py --feature=stft --method=METHOD_NAME --window-size=8192 --hop-size=4096 --batch-size=100 <SSLR_PATH>/human models/thesis_resnet_act5_p1lsp_s1ep4_ep10_valid_b100
 
 Evaluation
 **********
 
-| eval/gen_2tasks_report.py --method=METHOD_NAME --window-size=8192 --hop-size=4096 --output=REPORT_DIR --ssl-only <SSLR_PATH>/human
-| gnuplot --persist REPORT_DIR/ssl_pr_plot
+  eval/gen_2tasks_report.py --method=METHOD_NAME --window-size=8192 --hop-size=4096 --output=REPORT_DIR --ssl-only <SSLR_PATH>/human
+  gnuplot --persist REPORT_DIR/ssl_pr_plot
 
 Publications
 ------------
