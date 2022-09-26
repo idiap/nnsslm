@@ -1,7 +1,7 @@
 Neural Network based Sound Source Localization Models
 =====================================================
 
-This repository includes the programs to run and test the neural network models that we proposed in our publications in sound source localization and related fields, which are:
+This repository includes the programs to run and test the neural network models that we proposed in our publications on sound source localization, including
 
 * Deep learning based direction-of-arrival (DOA) estimation
 * Joint DOA estimation and speech/non-speech classification
@@ -26,48 +26,35 @@ Data
 We use the `SSLR dataset <https://www.idiap.ch/dataset/sslr>`_ for the experiments.
 
 
-Deep learning based direction-of-arrival (DOA) estimation
----------------------------------------------------------
+Usage
+-----
 
-This work is based on:
+Inference
+*********
+
+| ssl_nn_v2/test_nn_raw.py --feature=stft --method=METHOD_NAME --window-size=8192 --hop-size=4096 --batch-size=100 <SSLR_PATH>/human models/thesis_resnet_act5_p1lsp_s1ep4_ep10_valid_b100
+
+Evaluation
+**********
+
+| eval/gen_2tasks_report.py --method=METHOD_NAME --window-size=8192 --hop-size=4096 --output=REPORT_DIR --ssl-only <SSLR_PATH>/human
+| gnuplot --persist REPORT_DIR/ssl_pr_plot
+
+Publications
+------------
+
+The models and code in this repository are based on the work published in:
 
   Deep Neural Networks for Multiple Speaker Detection and Localization
   Weipeng He, Petr Motlicek, Jean-Marc Odobez 
   In *IEEE International Conference on Robotics and Automation (ICRA)*, 2018
 
-The neural network models can simultaneously detect and localize multiple sound sources in noisy environment. In particular, we included the following items in the repository:
-
-- code to extract features: GCC coefficients and GCCFB.
-- trained neural network models: GCC-MLP, GCCFB-CNN, and GCCFB-TSNN.
-- code to run the network models and save the output to files.
-- scripts to evaluate and visualize results.
-
-Usage
-.....
-
-(We are working on this)
-
-
-
-Joint DOA estimation and speech/non-speech classification
----------------------------------------------------------
-
-This work is based on:
-
   Joint Localization and Classification of Multiple Sound Sources Using a Multi-task Neural Network
   Weipeng He, Petr Motlicek, Jean-Marc Odobez 
   In *INTERSPEECH*, 2018
 
-The neural network can detect and localize multiple sound sources, and classify them into speech or non-speech. In particular, we included the following items in the repository:
-
-- trained neural network models: the multi-task NN as well as single-task NN for SSL only.
-- code to run the network models and save the output to files.
-- scripts to evaluate and visualize results.
-
-Usage
-.....
-
-(We are working on this)
-
+  Deep Learning Approaches for Auditory Perception in Robotics
+  Weipeng He
+  PhD Thesis, EPFL
 
 
