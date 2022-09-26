@@ -17,7 +17,7 @@ PURPOSE. See the BSD 3-Clause License for more details.
 """
 
 import os
-import cPickle as pickle
+import pickle as pickle
 
 import numpy as np
 
@@ -67,7 +67,7 @@ _VAD_RATE = 100
 
 def load_vad_gt(path):
     ph_gt = np.load(path)
-    return {k:p != 1 for k,p in ph_gt.iteritems()}
+    return {k:p != 1 for k,p in ph_gt.items()}
 
 def get_vad_mask_frame(vad, vad_begin, begin, end):
     if end < vad_begin:
@@ -189,7 +189,7 @@ def save_bf_wav(path, bf_name, sid, src_id, fs, sig, spk_id,
     prefix = os.path.join(path, bf_dir, bf_name, '%s_%d' % (sid, src_id))
     apkit.save_wav(prefix + _WAV_SUFFIX, fs, sig)
     with open(prefix + _SPK_ID_SUFFIX, 'w') as f:
-        print >> f, spk_id
+        print(spk_id, file=f)
 
 class NSrcFilter:
     def __init__(self, nsrc):

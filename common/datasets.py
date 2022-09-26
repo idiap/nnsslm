@@ -17,7 +17,7 @@ PURPOSE. See the BSD 3-Clause License for more details.
 """
 
 import os
-import cPickle as pickle
+import pickle as pickle
 import random
 import math
 
@@ -193,7 +193,7 @@ def prepare_gt_as_ordered_posterior(gt_locs):
     for l in gt_locs:
         azi, ele = apkit.vec2ae(l)
         labels.append(int(azi / (2 * np.pi / _OPOST_N_DIR) + 0.5) % _OPOST_N_DIR)
-    for _ in xrange(2 - len(labels)):
+    for _ in range(2 - len(labels)):
         labels.append(_OPOST_N_DIR)
     labels = sorted(labels)
     post = np.zeros(2 * (_OPOST_N_DIR + 1))
@@ -344,7 +344,7 @@ class FrameDataset(data.Dataset):
 class SingleNumpyDataset(data.Dataset):
     def __init__(self, path):
         self.data = np.load(path)
-        self.names = [path for _ in xrange(len(self.data))]
+        self.names = [path for _ in range(len(self.data))]
 
     def __getitem__(self, index):
         feat = self.data[index]
@@ -373,7 +373,7 @@ class EnsembleDataset(data.Dataset):
         self.datasets = datasets
         self.extract_ft = extract_ft
         self.prepare_gt = prepare_gt
-        self.index = [(i, j) for i, d in enumerate(datasets) for j in xrange(len(d))]
+        self.index = [(i, j) for i, d in enumerate(datasets) for j in range(len(d))]
 
     def __getitem__(self, index):
         i, j = self.index[index]
@@ -456,7 +456,7 @@ class RawWavDataset(data.Dataset):
                                                     os.path.join(self.datadir, f))
                     nframes = (nsamples - win_size) // hop_size
                     self.names += [n] * nframes
-                    self.fids += range(nframes)
+                    self.fids += list(range(nframes))
 
     def __getitem__(self, index):
         n = self.names[index]
@@ -626,7 +626,7 @@ class BfDataset(data.Dataset):
                 with open(os.path.join(self.datadir, f)) as s:
                     stypes = pickle.load(s)
                 self.names += [n] * len(stypes)
-                self.fids += xrange(len(stypes))
+                self.fids += range(len(stypes))
                 self.gts += stypes
 
     def __getitem__(self, index):
@@ -800,7 +800,7 @@ class BinauralMixtureDatatset(data.Dataset):
             max_l = _MIN_SIG_LVL
             min_l = _MAX_SIG_LVL
             sig_lvls = []
-            for _ in xrange(nsrc):
+            for _ in range(nsrc):
                 if len(sig_lvls) == 0:
                     slvl = self.rng.uniform(_MIN_SIG_LVL, _MAX_SIG_LVL)
                 else:
@@ -827,7 +827,7 @@ class MixtureDataset(data.Dataset):
         self.extract_ft = extract_ft
         logvola, logvolb = np.log(sig_vol_range)
         self.vols = [math.exp(rng.uniform(logvola, logvolb))
-                                            for _ in xrange(len(signal_set))]
+                                            for _ in range(len(signal_set))]
 
     def __getitem__(self, index):
         (fs, frame), gt = self.signal_set[index]
@@ -985,7 +985,7 @@ class RandomMixtureWithBgDataset(data.Dataset):
             max_snr = self.config.min_snr
             min_snr = self.config.max_snr
             sig_snrs = []
-            for _ in xrange(nsrc):
+            for _ in range(nsrc):
                 if len(sig_snrs) == 0:
                     ssnr = self.rng.uniform(self.config.min_snr,
                                             self.config.max_snr)
@@ -1066,9 +1066,9 @@ class RandomMixtureRealSegmentsDataset(data.Dataset):
         amps = self._get_amps([v for i, v in sl])
 
         # print volume for analysis
-        print '$volume$ %d %s %s' % (self.nsrc,
+        print('$volume$ %d %s %s' % (self.nsrc,
                                      ' '.join(['%.6g' % v for i, v in sl]),
-                                     ' '.join(['%.6g' % a for a in amps]))
+                                     ' '.join(['%.6g' % a for a in amps])))
         ###########################
 
         if self.single_out is None:
@@ -1085,7 +1085,7 @@ class RandomMixtureRealSegmentsDataset(data.Dataset):
     def _get_amps(self, vols):
         # target db : beta ditribution
         tardb = [scipy.special.btdtri(3, 3, self.rng.random())
-                                            for _ in xrange(self.nsrc)]
+                                            for _ in range(self.nsrc)]
         tardb = np.array(tardb) * 10.0 - 5.0
 
         # target volume
@@ -1110,14 +1110,14 @@ def store_dataset(dataset, prefix):
     ngroup = 1000
     wpt = prefix + '-%06d' + _WAV_SUFFIX
     gpt = prefix + '-%06d' + _GTF_SUFFIX_PATTERN % (win_size, win_size / 2)
-    for i in xrange(0, len(dataset), ngroup):
+    for i in range(0, len(dataset), ngroup):
         gc = i // ngroup
-        print 'g#%03d' % gc
+        print('g#%03d' % gc)
         j = min(len(dataset), i + ngroup)
 
         lsig = []
         lgt = []
-        for k in xrange(i, j):
+        for k in range(i, j):
             (nfs, sig), gt = dataset[k]
             assert nfs == fs
             assert sig.shape == (nch, win_size)
@@ -1238,7 +1238,7 @@ class VaryingLevelDataset(data.Dataset):
         ac_shift = self.rng.gauss(0, self.ac_var)
 
         # shift differently for each channel
-        for i in xrange(len(sig)):
+        for i in range(len(sig)):
             ic_shift = self.rng.gauss(0, self.ic_var)
             sig[i] *= 10.0 ** ((ac_shift + ic_shift) / 20.0)
 

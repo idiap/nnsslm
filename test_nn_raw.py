@@ -36,7 +36,7 @@ _WAV_SUFFIX = '.wav'
 
 def _predict(net, x, batch=100):
     result = []
-    for i in xrange(0, len(x), batch):
+    for i in range(0, len(x), batch):
         j = min(i + batch, len(x))
         y = Variable(torch.from_numpy(x[i:j])).cuda()
         outputs = net(y)
@@ -73,7 +73,7 @@ def main(test_path, model, extract_ft, win_size, hop_size, n_ctx, n_ahd, method,
     net = archs.load_module(model)
     if add_sns:
         net = archs.AddConstantSns(net)
-    print >> sys.stderr, net
+    print(net, file=sys.stderr)
     net.eval()
     net.cuda()
 
@@ -90,7 +90,7 @@ def main(test_path, model, extract_ft, win_size, hop_size, n_ctx, n_ahd, method,
     for f in os.listdir(ddir):
         if f.endswith(_WAV_SUFFIX):
             name = f[:-len(_WAV_SUFFIX)]
-            print >> sys.stderr, name
+            print(name, file=sys.stderr)
             feat = _load_feature(os.path.join(ddir, f), extract_ft, win_size,
                                  hop_size, n_ctx, n_ahd)
             odtype = feat.dtype
@@ -112,7 +112,7 @@ if __name__ == '__main__':
     parser.add_argument('model', metavar='MODEL_PATH', type=str,
                         help='path to trained model')
     parser.add_argument('-n', '--feature', metavar='FEATURE', type=str,
-                        required=True, choices=_FEATURES.keys(),
+                        required=True, choices=list(_FEATURES.keys()),
                         help='feature extraction method')
     parser.add_argument('-m', '--method', metavar='METHOD', type=str,
                         required=True, help='method name')

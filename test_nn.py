@@ -35,7 +35,7 @@ _FEAT_SUFFIX = '.npy'
 def _predict(net, x):
     batch = 256
     result = []
-    for i in xrange(0, len(x), batch):
+    for i in range(0, len(x), batch):
         j = min(i + batch, len(x))
         y = Variable(torch.from_numpy(x[i:j])).cuda()
         outputs = net(y)
@@ -47,7 +47,7 @@ def main(test_path, model, fname, method, add_sns):
     net = archs.load_module(model)
     if add_sns:
         net = archs.AddConstantSns(net)
-    print >> sys.stderr, net
+    print(net, file=sys.stderr)
     net.eval()
     net.cuda()
 
@@ -64,7 +64,7 @@ def main(test_path, model, fname, method, add_sns):
     for f in os.listdir(fdir):
         if f.endswith(_FEAT_SUFFIX):
             name = f[:-len(_FEAT_SUFFIX)]
-            print >> sys.stderr, name
+            print(name, file=sys.stderr)
             feat = np.load(os.path.join(fdir, f))
             odtype = feat.dtype
             feat = feat.astype('float32', copy=False)

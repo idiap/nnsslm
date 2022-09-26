@@ -21,7 +21,7 @@ import os
 import argparse
 import math
 from fractions import Fraction
-import cPickle as pickle
+import pickle as pickle
 
 import numpy as np
 import cv2
@@ -102,7 +102,7 @@ def plot_hmap_fov(img, a2dx, phi, sns=None):
 def plot_grid(img, a2dx):
     h, w, _ = img.shape
     ol = img.copy()
-    for a in xrange(-25, 26, 5):
+    for a in range(-25, 26, 5):
         lx = a2dx[a]
         assert lx is not None
         cv2.line(ol, (lx, 0), (lx, h), (160, 160, 160))
@@ -207,7 +207,7 @@ def main(root, outdir, method, sid, vmin, vmax, win_size, hop_size,
     ndoa, nframe = phi.shape
     assert ndoa == len(doa)
     heat_data = np.stack([phi, sns], axis=-1) if add_sns else phi
-    for t in xrange(nframe):
+    for t in range(nframe):
         np.savetxt(os.path.join(odatadir, 'h%06d' % t),
                    heat_data[:,t][perm], fmt='%.5g')
 
@@ -230,7 +230,7 @@ def main(root, outdir, method, sid, vmin, vmax, win_size, hop_size,
         vdir = os.path.join(root, 'video_proc', sid)
         stamps = np.loadtxt(os.path.join(vdir, 'stamps'))
 
-        for fid in xrange(nframe):
+        for fid in range(nframe):
             t = float(fid * hop_size + win_size / 2) / fs + audio_onset
             vimg = cv2.imread(os.path.join(vdir,
                                           'r%06d.png' % qvfid(t, stamps)))
@@ -333,7 +333,7 @@ def main(root, outdir, method, sid, vmin, vmax, win_size, hop_size,
             cv2.imwrite(os.path.join(ofigdir, 'v%06d.png' % fid), img)
     else:
         # no video
-        for fid in xrange(nframe):
+        for fid in range(nframe):
             if not no_gt and fid in fid2gt and len(fid2gt[fid]) > 0:
                 if add_sns:
                     gdoa = np.asarray([loc for loc, stype, spkid in fid2gt[fid]])
@@ -385,66 +385,66 @@ def main(root, outdir, method, sid, vmin, vmax, win_size, hop_size,
     script_file = os.path.join(outdir, 'plot.gp')
     with open(script_file, 'w') as s:
         if not no_video:
-            print >> s, 'set terminal pngcairo size 240,320'
+            print('set terminal pngcairo size 240,320', file=s)
         else:
-            print >> s, 'set terminal pngcairo size 800,600'
-        print >> s, 'set polar'
-        print >> s, 'unset border'
-        print >> s, 'unset margin'
-        print >> s, 'set tics scale 0'
-        print >> s, 'unset xtics'
-        print >> s, 'unset ytics'
-        print >> s, 'set rtics ("" 0, "" 0.25, "" 0.5, "" 0.75, "" 1.0)'
-        print >> s, 'unset raxis'
-        print >> s, 'set trange [-2*pi:2*pi]'
-        print >> s, 'set grid polar pi/6'
-        print >> s, 'set size square'
+            print('set terminal pngcairo size 800,600', file=s)
+        print('set polar', file=s)
+        print('unset border', file=s)
+        print('unset margin', file=s)
+        print('set tics scale 0', file=s)
+        print('unset xtics', file=s)
+        print('unset ytics', file=s)
+        print('set rtics ("" 0, "" 0.25, "" 0.5, "" 0.75, "" 1.0)', file=s)
+        print('unset raxis', file=s)
+        print('set trange [-2*pi:2*pi]', file=s)
+        print('set grid polar pi/6', file=s)
+        print('set size square', file=s)
         if not no_video:
-            print >> s, 'set key bm'
+            print('set key bm', file=s)
         else:
-            print >> s, 'set key bot rm'
-            print >> s, 'set xrange [-1.3:1.3]'
-            print >> s, 'set yrange [-1.3:1.3]'
-        print >> s, 'set label at 1.2,0 "right" center rotate by -90 tc rgb "gray"'
-        print >> s, 'set label at -1.2,0 "left" center rotate by 90 tc rgb "gray"'
-        print >> s, 'set label at 0,1.2 "front" center tc rgb "gray"'
-        print >> s, 'set label at 0,-1.2 "rear" center tc rgb "gray"'
-        print >> s, 'do for [ii=0:%d] {' % (nframe - 1)
-        print >> s, '  data=sprintf("< paste %s %s/h%%06d", ii)' % (doa_file, odatadir)
-        print >> s, '  gdata=sprintf("%s/g%%06d", ii)' % (odatadir)
-        print >> s, '  pdata=sprintf("%s/p%%06d", ii)' % (odatadir)
+            print('set key bot rm', file=s)
+            print('set xrange [-1.3:1.3]', file=s)
+            print('set yrange [-1.3:1.3]', file=s)
+        print('set label at 1.2,0 "right" center rotate by -90 tc rgb "gray"', file=s)
+        print('set label at -1.2,0 "left" center rotate by 90 tc rgb "gray"', file=s)
+        print('set label at 0,1.2 "front" center tc rgb "gray"', file=s)
+        print('set label at 0,-1.2 "rear" center tc rgb "gray"', file=s)
+        print('do for [ii=0:%d] {' % (nframe - 1), file=s)
+        print('  data=sprintf("< paste %s %s/h%%06d", ii)' % (doa_file, odatadir), file=s)
+        print('  gdata=sprintf("%s/g%%06d", ii)' % (odatadir), file=s)
+        print('  pdata=sprintf("%s/p%%06d", ii)' % (odatadir), file=s)
         if add_sns:
-            print >> s, '  fdata=sprintf("%s/f%%06d", ii)' % (odatadir)
-            print >> s, '  qdata=sprintf("%s/q%%06d", ii)' % (odatadir)
-        print >> s, '  set output sprintf("%s/t%%06d.png", ii)' % ofigdir
+            print('  fdata=sprintf("%s/f%%06d", ii)' % (odatadir), file=s)
+            print('  qdata=sprintf("%s/q%%06d", ii)' % (odatadir), file=s)
+        print('  set output sprintf("%s/t%%06d.png", ii)' % ofigdir, file=s)
         if no_video:
-            print >> s, '  set title sprintf("Method %s; Time %%.2fs; Frame #%%06d", ii * %g, ii)' % (method_name, 1.0 * hop_size / fs)
+            print('  set title sprintf("Method %s; Time %%.2fs; Frame #%%06d", ii * %g, ii)' % (method_name, 1.0 * hop_size / fs), file=s)
         if add_sns:
-            print >> s, '  plot 1.1 w l lw 2 lc rgb "gray" notitle,' \
+            print('  plot 1.1 w l lw 2 lc rgb "gray" notitle,' \
                         ' data u ($1+0.5*pi):2 w l lc rgb "%s" lw 2 title "SSL Likelihood",' \
                         ' data u ($1+0.5*pi):3 w l lc rgb "%s" lw 1 title "SNS Likelihood",' \
                         ' gdata u ($1+0.5*pi):(1.05) pt 6 ps 3 lw 3 lc rgb "%s" title "GT. Speech",' \
                         ' fdata u ($1+0.5*pi):(1.05) pt 6 ps 3 lw 3 lc rgb "%s" title "GT. Noise",' \
                         ' pdata u ($1+0.5*pi):(1.05) pt 2 ps 3 lw 3 lc rgb "%s" title "Pred. Speech",' \
                         ' qdata u ($1+0.5*pi):(1.05) pt 2 ps 3 lw 3 lc rgb "%s" title "Pred. Noise"' \
-                        % tuple([_bgrtuple2rgbstr(c) for c in [_COLOR_OUTPUT_SSL, _COLOR_OUTPUT_SNS, _COLOR_GT_SPEECH, _COLOR_GT_NOISE, _COLOR_PRED_SPEECH, _COLOR_PRED_NOISE]])
+                        % tuple([_bgrtuple2rgbstr(c) for c in [_COLOR_OUTPUT_SSL, _COLOR_OUTPUT_SNS, _COLOR_GT_SPEECH, _COLOR_GT_NOISE, _COLOR_PRED_SPEECH, _COLOR_PRED_NOISE]]), file=s)
         else:
-            print >> s, '  plot 1.1 w l lw 2 lc rgb "gray" notitle, data u ($1+0.5*pi):2 w l lc rgb "blue" lw 2 title "output value", gdata u ($1+0.5*pi):(1.05) pt 6 ps 3 lw 3 lc rgb "red" title "ground truth", pdata u ($1+0.5*pi):(1.05) pt 2 ps 3 lw 3 lc rgb "green" title "prediction"'
-        print >> s, '}'
+            print('  plot 1.1 w l lw 2 lc rgb "gray" notitle, data u ($1+0.5*pi):2 w l lc rgb "blue" lw 2 title "output value", gdata u ($1+0.5*pi):(1.05) pt 6 ps 3 lw 3 lc rgb "red" title "ground truth", pdata u ($1+0.5*pi):(1.05) pt 2 ps 3 lw 3 lc rgb "green" title "prediction"', file=s)
+        print('}', file=s)
     audio_temp = os.path.join(outdir, '%s.wav' % sid)
-    print 'data and script generated, now run'
-    print '  gnuplot %s && \\' % script_file
+    print('data and script generated, now run')
+    print('  gnuplot %s && \\' % script_file)
     if not no_video:
-        print '  for x in %s/v*.png; do z=${x##*/}; y=${x%%/*}/${z/v/t}; o=${x%%/*}/${z/v/m}; convert -page +0+0 ${x} -page +880+100 ${y} -flatten ${o}; done && \\' % ofigdir 
-    print '  gst-launch-1.0 filesrc location="%s" ! decodebin ! audioresample ! "audio/x-raw,rate=16000" ! deinterleave name=d' \
+        print('  for x in %s/v*.png; do z=${x##*/}; y=${x%%/*}/${z/v/t}; o=${x%%/*}/${z/v/m}; convert -page +0+0 ${x} -page +880+100 ${y} -flatten ${o}; done && \\' % ofigdir) 
+    print('  gst-launch-1.0 filesrc location="%s" ! decodebin ! audioresample ! "audio/x-raw,rate=16000" ! deinterleave name=d' \
           '    interleave name=i ! audioconvert ! wavenc ! filesink location="%s"' \
           '    d.src_0 ! queue ! i.sink_0' \
-          '    d.src_1 ! queue ! i.sink_1 && \\' % (wav_file, audio_temp)
-    print '  gst-launch-1.0 multifilesrc location="%s/%s%%06d.png" ' \
+          '    d.src_1 ! queue ! i.sink_1 && \\' % (wav_file, audio_temp))
+    print('  gst-launch-1.0 multifilesrc location="%s/%s%%06d.png" ' \
           '    caps="image/png,framerate=%d/%d,pixel-aspect-ratio=1/1" ' \
           '    ! decodebin ! videorate ! videoconvert ! theoraenc ! oggmux name=mux ! filesink location=%s/%s.ogv ' \
           '    filesrc location="%s" ! decodebin ! audioconvert ! vorbisenc ! mux. ' \
-                % (ofigdir, 'm' if not no_video else 't', fr.numerator, fr.denominator, outdir, sid, audio_temp)
+                % (ofigdir, 'm' if not no_video else 't', fr.numerator, fr.denominator, outdir, sid, audio_temp))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='generate demo video')

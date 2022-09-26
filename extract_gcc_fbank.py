@@ -52,8 +52,8 @@ def main(wavfile, destfile, win_size, hop_size, nfbank, zoom, eps):
 
     # merge to a single numpy array, indexed by 'tpbd'
     #                                           (time, pair, bank, delay)
-    feature = np.asarray([fbcc[(i,j)] for i in xrange(nch)
-                                      for j in xrange(nch)
+    feature = np.asarray([fbcc[(i,j)] for i in range(nch)
+                                      for j in range(nch)
                                       if i < j])
     feature = np.moveaxis(feature, 2, 0)
 

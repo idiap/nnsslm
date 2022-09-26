@@ -88,8 +88,8 @@ def main(test_path, method, win_size, hop_size, etol, nb_size, min_sc,
                                                     for p in test_path])
 
     t = time.time()
-    print >> sys.stderr, 'data loaded: %.3f' % (t - s)
-    print >> sys.stderr, 'data samples: %d' % len(rg)
+    print('data loaded: %.3f' % (t - s), file=sys.stderr)
+    print('data samples: %d' % len(rg), file=sys.stderr)
     s = t
 
     if output != '.':
@@ -101,30 +101,30 @@ def main(test_path, method, win_size, hop_size, etol, nb_size, min_sc,
                                                         min_score=snsperf_min_sc)
 
         t = time.time()
-        print >> sys.stderr, 'as speech/non-speech classification: %.3f' % (t - s)
+        print('as speech/non-speech classification: %.3f' % (t - s), file=sys.stderr)
         s = t
 
         with open(os.path.join(output, 'sns_pddoa'), 'w') as f:
-            print >> f, evaluation.gen_report_sns(sns_res_wgt, method, rg)
-            print >> f, ''
-            print >> f, '# localization threshold : %.2f' % snsperf_min_sc
+            print(evaluation.gen_report_sns(sns_res_wgt, method, rg), file=f)
+            print('', file=f)
+            print('# localization threshold : %.2f' % snsperf_min_sc, file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen sns pddoa: %.3f' % (t - s)
+        print('gen sns pddoa: %.3f' % (t - s), file=sys.stderr)
         s = t
 
     # as SSL
     rg_ssl = _as_ssl(rg)
 
     t = time.time()
-    print >> sys.stderr, 'as sound source localization: %.3f' % (t - s)
+    print('as sound source localization: %.3f' % (t - s), file=sys.stderr)
     s = t
 
     with open(os.path.join(output, 'ssl_known_nsrc'), 'w') as f:
-        print >> f, evaluation.gen_report_known_nsrc(rg_ssl, etol, method)
+        print(evaluation.gen_report_known_nsrc(rg_ssl, etol, method), file=f)
 
     t = time.time()
-    print >> sys.stderr, 'gen known nsrc: %.3f' % (t - s)
+    print('gen known nsrc: %.3f' % (t - s), file=sys.stderr)
     s = t
 
     plot, f1_info = evaluation.gen_p_r_figures([rg_ssl], [method], etol,
@@ -132,52 +132,52 @@ def main(test_path, method, win_size, hop_size, etol, nb_size, min_sc,
     th, f1, recall, prec = f1_info[0]
 
     with open(os.path.join(output, 'ssl_pr_plot'), 'w') as f:
-        print >> f, plot
+        print(plot, file=f)
 
     t = time.time()
-    print >> sys.stderr, 'gen pr plot: %.3f' % (t - s)
+    print('gen pr plot: %.3f' % (t - s), file=sys.stderr)
     s = t
 
     with open(os.path.join(output, 'ssl_unknown_nsrc'), 'w') as f:
-        print >> f, f1_info
-        print >> f, evaluation.gen_report_unknown_nsrc(rg_ssl, th, etol, method)
+        print(f1_info, file=f)
+        print(evaluation.gen_report_unknown_nsrc(rg_ssl, th, etol, method), file=f)
 
     t = time.time()
-    print >> sys.stderr, 'gen unknown nsrc: %.3f' % (t - s)
+    print('gen unknown nsrc: %.3f' % (t - s), file=sys.stderr)
     s = t
 
-    for nsrc in xrange(1, 5):
+    for nsrc in range(1, 5):
         filt = utils.NSrcFilter(nsrc)
         rg_sub = _as_ssl(rg, filt)
 
         if len(rg_sub) == 0:
             continue
 
-        print >> sys.stderr, '# frames s%d: %d' % (nsrc, len(rg_sub))
+        print('# frames s%d: %d' % (nsrc, len(rg_sub)), file=sys.stderr)
         plot = evaluation.gen_p_r_figures([rg_sub], [method], etol)
 
         with open(os.path.join(output, 'ssl_pr_plot_s%d' % nsrc), 'w') as f:
-            print >> f, plot
+            print(plot, file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen pr plot s%d: %.3f' % (nsrc, t - s)
+        print('gen pr plot s%d: %.3f' % (nsrc, t - s), file=sys.stderr)
         s = t
 
-    for nnsrc in xrange(0, 3):
+    for nnsrc in range(0, 3):
         filt = utils.NNoiseFilter(nnsrc)
         rg_sub = _as_ssl(rg, filt)
 
         if len(rg_sub) == 0:
             continue
 
-        print >> sys.stderr, '# frames n%d: %d' % (nnsrc, len(rg_sub))
+        print('# frames n%d: %d' % (nnsrc, len(rg_sub)), file=sys.stderr)
         plot = evaluation.gen_p_r_figures([rg_sub], [method], etol)
 
         with open(os.path.join(output, 'ssl_pr_plot_n%d' % nnsrc), 'w') as f:
-            print >> f, plot
+            print(plot, file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen pr plot n%d: %.3f' % (nnsrc, t - s)
+        print('gen pr plot n%d: %.3f' % (nnsrc, t - s), file=sys.stderr)
         s = t
 
     if not ssl_only:
@@ -185,14 +185,14 @@ def main(test_path, method, win_size, hop_size, etol, nb_size, min_sc,
         rg_speech = _as_speech(rg)
 
         t = time.time()
-        print >> sys.stderr, 'as speech source localization: %.3f' % (t - s)
+        print('as speech source localization: %.3f' % (t - s), file=sys.stderr)
         s = t
 
         with open(os.path.join(output, 'speech_known_nsrc'), 'w') as f:
-            print >> f, evaluation.gen_report_known_nsrc(rg_speech, etol, method)
+            print(evaluation.gen_report_known_nsrc(rg_speech, etol, method), file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen known nsrc: %.3f' % (t - s)
+        print('gen known nsrc: %.3f' % (t - s), file=sys.stderr)
         s = t
 
         plot, f1_info = evaluation.gen_p_r_figures([rg_speech], [method], etol,
@@ -200,46 +200,46 @@ def main(test_path, method, win_size, hop_size, etol, nb_size, min_sc,
         th, f1, recall, prec = f1_info[0]
 
         with open(os.path.join(output, 'speech_pr_plot'), 'w') as f:
-            print >> f, plot
+            print(plot, file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen pr plot: %.3f' % (t - s)
+        print('gen pr plot: %.3f' % (t - s), file=sys.stderr)
         s = t
 
         with open(os.path.join(output, 'speech_unknown_nsrc'), 'w') as f:
-            print >> f, f1_info
-            print >> f, evaluation.gen_report_unknown_nsrc(rg_speech, th, etol, method)
+            print(f1_info, file=f)
+            print(evaluation.gen_report_unknown_nsrc(rg_speech, th, etol, method), file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen unknown nsrc: %.3f' % (t - s)
+        print('gen unknown nsrc: %.3f' % (t - s), file=sys.stderr)
         s = t
 
         filt = utils.NNoiseFilter(0)
         rg_sub = _as_speech_filter(rg, filt)
-        print >> sys.stderr, '# frames n0: %d' % len(rg_sub)
+        print('# frames n0: %d' % len(rg_sub), file=sys.stderr)
 
         if len(rg_sub) > 0 and len(rg_sub) < len(rg):
             plot = evaluation.gen_p_r_figures([rg_sub], [method], etol)
 
             with open(os.path.join(output, 'speech_pr_plot_n0'), 'w') as f:
-                print >> f, plot
+                print(plot, file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen pr plot n0: %.3f' % (t - s)
+        print('gen pr plot n0: %.3f' % (t - s), file=sys.stderr)
         s = t
 
         filt = utils.NNoiseFilter(1)
         rg_sub = _as_speech_filter(rg, filt)
-        print >> sys.stderr, '# frames n1: %d' % len(rg_sub)
+        print('# frames n1: %d' % len(rg_sub), file=sys.stderr)
 
         if len(rg_sub) > 0 and len(rg_sub) < len(rg):
             plot = evaluation.gen_p_r_figures([rg_sub], [method], etol)
 
             with open(os.path.join(output, 'speech_pr_plot_n1'), 'w') as f:
-                print >> f, plot
+                print(plot, file=f)
 
         t = time.time()
-        print >> sys.stderr, 'gen pr plot n1: %.3f' % (t - s)
+        print('gen pr plot n1: %.3f' % (t - s), file=sys.stderr)
         s = t
 
     '''
