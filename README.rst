@@ -14,10 +14,10 @@ Please cite the relevant publications when using the code.
 Dependency
 ----------
 
-* `Python <https://www.python.org/>`_ (version 2.7)
-* `NumPy <http://www.numpy.org/>`_ (version 1.14)
-* `PyTorch <https://pytorch.org/>`_ (version 0.2)
-* `apkit <https://github.com/hwp/apkit>`_ (version 0.2)
+* `Python <https://www.python.org/>`_ (version >= 3.8)
+* `NumPy <http://www.numpy.org/>`_ (version >= 1.14)
+* `PyTorch <https://pytorch.org/>`_ (version >= 0.2)
+* `apkit <https://github.com/hwp/apkit>`_ (version >= 0.2)
 
 
 Data
