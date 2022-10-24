@@ -483,9 +483,6 @@ class SupervisedProcess(SimpleModelProcess):
         # load data
         x, y = next(self.loader_iter)
 
-        if self.verbose:
-            print(f'load batch of shape {tuple(x.shape)}', file=sys.stderr)
-
         # if torch tensor, put to gpu
         if self.gpu:
             xv = _to_gpu_recursively(x)

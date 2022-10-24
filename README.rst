@@ -29,6 +29,13 @@ We use the `SSLR dataset <https://www.idiap.ch/dataset/sslr>`_ for the experimen
 Usage
 -----
 
+Training
+********
+
+.. code::
+
+  ssl_nn_v2/train_resnet_2stage.py --model=models/test --window-size=8192 --hop-size=4096 --n-doa=360 --output-act=5 --n-out-hidden=1 --sigma=8 --s1-epoch=4 --epoch=10 --lr=0.001 --ld=2 --batch-size=128 <SSLR_PATH>/lsp_train_*
+
 Inference
 *********
 
