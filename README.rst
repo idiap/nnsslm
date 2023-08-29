@@ -36,6 +36,10 @@ Training
 
   ssl_nn_v2/train_resnet_2stage.py --model=models/test --window-size=8192 --hop-size=4096 --n-doa=360 --output-act=5 --n-out-hidden=1 --sigma=8 --s1-epoch=4 --epoch=10 --lr=0.001 --ld=2 --batch-size=128 <SSLR_PATH>/lsp_train_*
 
+.. note::
+
+  This command reproduces the "ResNet-STFT" model described in `"Deep Learning Approaches for Auditory Perception in Robotics", Weipeng He, PhD Thesis, EPFL <https://infoscience.epfl.ch/record/283940>`_.
+
 Inference
 *********
 
